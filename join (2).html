@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COVE — Add Your Details</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080f14;min-height:100vh;color:#ddeaf0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;background:#080f14}
+.page{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:48px 24px 80px}
+
+/* WORDMARK */
+.wm-wrap{display:inline-block;position:relative;margin-bottom:16px}
+.wm-network{position:absolute;top:-32px;left:-4px;pointer-events:none}
+.wm-text{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,12vw,76px);font-weight:400;color:#ffffff;letter-spacing:0.18em;line-height:1;position:relative;z-index:1}
+.wm-c{color:#4ec9b0}
+.wm-tagline{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7a9aaa;white-space:nowrap;margin-top:6px}
+.header{text-align:center;margin-bottom:36px}
+.tagline{white-space:nowrap;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#7a9aaa;margin-top:6px}
+.divider{width:40px;height:1px;background:linear-gradient(90deg,transparent,#4ec9b0,transparent);margin:16px auto 20px}
+.header-desc{font-size:13px;color:#8ab0bc;line-height:1.8;max-width:420px;margin:0 auto}
+
+/* FORM */
+.form-card{background:rgba(13,24,32,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:32px 28px}
+.form-section{margin-bottom:24px}
+.section-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#4ec9b0;font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.07)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:500;color:#ddeaf0;margin-bottom:6px}
+.field label .req{color:#4ec9b0;margin-left:3px}
+.field label .hint{font-size:11px;color:#7a9aaa;font-weight:300;margin-left:6px}
+input,textarea,select{width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;color:#ddeaf0;font-family:-apple-system,sans-serif;font-size:13px;outline:none;transition:border-color .2s;-webkit-appearance:none}
+input:focus,textarea:focus,select:focus{border-color:#4ec9b0}
+input::placeholder,textarea::placeholder{color:#7a9aaa}
+textarea{resize:vertical;min-height:80px;line-height:1.6}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a9aaa' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer}
+select option{background:#0d1820;color:#ddeaf0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.field-row{grid-template-columns:1fr}}
+.field-error{font-size:11px;color:#ff7b7b;margin-top:4px;display:none}
+input.invalid,textarea.invalid,select.invalid{border-color:#ff7b7b}
+
+/* SUBMIT BUTTON */
+.submit-btn{
+  width:100%;padding:16px 24px;
+  background:linear-gradient(135deg,#2a9d8f,#4ec9b0);
+  color:#ffffff;border:none;border-radius:12px;
+  font-family:-apple-system,sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .2s;letter-spacing:0.3px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 8px 32px rgba(78,201,176,0.2);
+}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 12px 40px rgba(78,201,176,0.3)}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.submit-note{font-size:11px;color:#7a9aaa;text-align:center;margin-top:10px;line-height:1.7}
+
+/* SUCCESS */
+.success-box{text-align:center;padding:48px 28px;background:rgba(78,201,176,0.05);border:1px solid rgba(78,201,176,0.2);border-radius:20px;display:none}
+.success-icon{font-size:44px;margin-bottom:16px}
+.success-title{font-family:Georgia,serif;font-size:22px;color:#fff;margin-bottom:8px;font-weight:400}
+.success-sub{font-size:13px;color:#8ab0bc;line-height:1.7}
+
+footer{text-align:center;padding-top:40px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#2a4040}
+</style>
+</head>
+<body style="background:#080f14;color:#ddeaf0">
+<canvas id="bg-canvas"></canvas>
+<div class="page">
+
+  <div class="header">
+    <div class="wm-wrap">
+      <div class="wm-network">
+        <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:40px">
+          <line x1="20" y1="40" x2="55" y2="12" stroke="#4ec9b0" stroke-width="1" opacity="0.5"/>
+          <line x1="20" y1="40" x2="68" y2="28" stroke="#4ec9b0" stroke-width="1" opacity="0.4"/>
+          <line x1="55" y1="12" x2="68" y2="28" stroke="#4ec9b0" stroke-width="0.8" opacity="0.3"/>
+          <line x1="20" y1="40" x2="38" y2="6" stroke="#4ec9b0" stroke-width="0.8" opacity="0.3"/>
+          <circle cx="20" cy="40" r="2.5" fill="#4ec9b0" opacity="0.8"/>
+          <circle cx="55" cy="12" r="2" fill="#4ec9b0" opacity="0.6"/>
+          <circle cx="68" cy="28" r="2" fill="#4ec9b0" opacity="0.5"/>
+          <circle cx="38" cy="6" r="1.5" fill="#4ec9b0" opacity="0.4"/>
+          <text x="64" y="14" font-size="10" fill="#e9c46a">✦</text>
+        </svg>
+      </div>
+      <div class="wm-text"><span class="wm-c">C</span>OVE</div>
+    </div>
+    <div class="tagline">Circle of Valued Entrepreneurs</div>
+    <div class="divider"></div>
+    <p class="header-desc">Add your details to the COVE member directory so fellow members can find and refer you.</p>
+  </div>
+
+  <div class="form-card" id="formCard">
+    <form id="memberForm" onsubmit="submitForm(event)" novalidate>
+
+      <div class="form-section">
+        <div class="section-label">Your Details</div>
+        <div class="field">
+          <label>Your Name <span class="req">*</span></label>
+          <input type="text" id="name" placeholder="e.g. Sarah Johnson" required>
+          <div class="field-error" id="name-err">Please enter your name</div>
+        </div>
+        <div class="field">
+          <label>Professional Photo URL <span class="hint">optional — paste a link to your photo</span></label>
+          <input type="url" id="photo" placeholder="https://yoursite.com/photo.jpg or LinkedIn photo URL">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Business Name <span class="req">*</span></label>
+            <input type="text" id="business" placeholder="Your business name" required>
+            <div class="field-error" id="business-err">Please enter your business name</div>
+          </div>
+          <div class="field">
+            <label>Category <span class="req">*</span></label>
+            <select id="category" required>
+              <option value="" disabled selected>Select your industry</option>
+              <option value="Architecture & Design">Architecture & Design</option>
+              <option value="Arts & Culture">Arts & Culture</option>
+              <option value="Beauty & Wellbeing">Beauty & Wellbeing</option>
+              <option value="Charity & Non-profit">Charity & Non-profit</option>
+              <option value="Childcare & Family">Childcare & Family</option>
+              <option value="Construction & Property">Construction & Property</option>
+              <option value="Consulting & Strategy">Consulting & Strategy</option>
+              <option value="Data & Analytics">Data & Analytics</option>
+              <option value="E-commerce & Digital">E-commerce & Digital</option>
+              <option value="Education & Training">Education & Training</option>
+              <option value="Fashion & Textiles">Fashion & Textiles</option>
+              <option value="Film & Photography">Film & Photography</option>
+              <option value="Finance & Accounting">Finance & Accounting</option>
+              <option value="Fitness & Sports">Fitness & Sports</option>
+              <option value="Food & Hospitality">Food & Hospitality</option>
+              <option value="Government & Public Sector">Government & Public Sector</option>
+              <option value="Healthcare & Medical">Healthcare & Medical</option>
+              <option value="Home & Garden">Home & Garden</option>
+              <option value="HR & Recruitment">HR & Recruitment</option>
+              <option value="Insurance">Insurance</option>
+              <option value="IT & Cybersecurity">IT & Cybersecurity</option>
+              <option value="Legal & Law">Legal & Law</option>
+              <option value="Manufacturing & Engineering">Manufacturing & Engineering</option>
+              <option value="Marketing & Advertising">Marketing & Advertising</option>
+              <option value="Media & Publishing">Media & Publishing</option>
+              <option value="Mental Health & Therapy">Mental Health & Therapy</option>
+              <option value="Music & Performing Arts">Music & Performing Arts</option>
+              <option value="Nutrition & Diet">Nutrition & Diet</option>
+              <option value="PR & Communications">PR & Communications</option>
+              <option value="Retail & Consumer Goods">Retail & Consumer Goods</option>
+              <option value="Software & Apps">Software & Apps</option>
+              <option value="Sports & Recreation">Sports & Recreation</option>
+              <option value="Transport & Logistics">Transport & Logistics</option>
+              <option value="Travel & Tourism">Travel & Tourism</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="field-error" id="category-err">Please select a category</div>
+          </div>
+        </div>
+        <div class="field">
+          <label>About Your Business <span class="req">*</span> <span class="hint">2-3 sentences</span></label>
+          <textarea id="description" placeholder="What you do and who you help..." required maxlength="300"></textarea>
+          <div class="field-error" id="description-err">Please describe your business</div>
+        </div>
+        <div class="field">
+          <label>Town / City <span class="req">*</span></label>
+          <input type="text" id="location" placeholder="e.g. Reading" required>
+          <div class="field-error" id="location-err">Please enter your town or city</div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>County <span class="req">*</span></label>
+            <input type="text" id="county" placeholder="e.g. Berkshire" required>
+            <div class="field-error" id="county-err">Please enter your county</div>
+          </div>
+          <div class="field">
+            <label>Country</label>
+            <input type="text" id="country" value="United Kingdom" readonly style="opacity:0.6;cursor:not-allowed">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-label">Your Links</div>
+        <div class="field">
+          <label>Website or Instagram <span class="req">*</span> <span class="hint">your main online presence</span></label>
+          <input type="url" id="website" placeholder="https://yourbusiness.co.uk or https://instagram.com/you" required>
+          <div class="field-error" id="website-err">Please enter your website or Instagram link</div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Instagram <span class="hint">optional</span></label>
+            <input type="url" id="instagram" placeholder="https://instagram.com/you">
+          </div>
+          <div class="field">
+            <label>Facebook <span class="hint">optional</span></label>
+            <input type="url" id="facebook" placeholder="https://facebook.com/yourbusiness">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Phone Number <span class="req">*</span></label>
+            <input type="tel" id="whatsapp" placeholder="e.g. 07700123456" required>
+            <div class="field-error" id="whatsapp-err">Please enter your phone number</div>
+          </div>
+          <div class="field">
+            <label>Business Phone <span class="hint">optional</span></label>
+            <input type="tel" id="tiktok" placeholder="e.g. 01189123456">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-label">Your Connection</div>
+        <div class="field">
+          <label>Who referred you? <span class="req">*</span></label>
+          <input type="text" id="referredby" placeholder="Name of the member who introduced you" required>
+          <div class="field-error" id="referredby-err">Please enter who referred you</div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:40px">
+          <line x1="20" y1="40" x2="55" y2="12" stroke="#4ec9b0" stroke-width="1" opacity="0.5"/>
+          <line x1="20" y1="40" x2="68" y2="28" stroke="#4ec9b0" stroke-width="1" opacity="0.4"/>
+          <line x1="55" y1="12" x2="68" y2="28" stroke="#4ec9b0" stroke-width="0.8" opacity="0.3"/>
+          <line x1="20" y1="40" x2="38" y2="6" stroke="#4ec9b0" stroke-width="0.8" opacity="0.3"/>
+          <circle cx="20" cy="40" r="2.5" fill="#4ec9b0" opacity="0.8"/>
+          <circle cx="55" cy="12" r="2" fill="#4ec9b0" opacity="0.6"/>
+          <circle cx="68" cy="28" r="2" fill="#4ec9b0" opacity="0.5"/>
+          <circle cx="38" cy="6" r="1.5" fill="#4ec9b0" opacity="0.4"/>
+          <text x="64" y="14" font-size="10" fill="#e9c46a">✦</text>
+        </svg>
+        Add Me to the Directory
+      </button>
+      <p class="submit-note">Your details are visible only to COVE members. Private and password protected.</p>
+
+    </form>
+  </div>
+
+  <div class="success-box" id="successBox">
+    <div class="success-icon">🌿</div>
+    <div class="success-title">You're in the directory!</div>
+    <p class="success-sub">Thank you for adding your details. Your profile will appear in the COVE member directory shortly.<br><br>Welcome to COVE. 🙏</p>
+  </div>
+
+  <footer>COVE · Circle of Valued Entrepreneurs · covenetwork.co.uk</footer>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('bg-canvas'),ctx=c.getContext('2d');
+  let W,H,nodes=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+  function init(){nodes=Array.from({length:35},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.2+.4,p:Math.random()*Math.PI*2}))}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle=`rgba(78,201,176,${(1-d/140)*.1})`;ctx.lineWidth=.5;ctx.stroke()}
+    }
+    nodes.forEach(n=>{
+      n.p+=.01;const g=(Math.sin(n.p)+1)*.5;
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r*(1+g*.3),0,Math.PI*2);
+      ctx.fillStyle=`rgba(78,201,176,${.14+g*.22})`;ctx.fill();
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<-10)n.x=W+10;if(n.x>W+10)n.x=-10;
+      if(n.y<-10)n.y=H+10;if(n.y>H+10)n.y=-10;
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);
+  resize();init();draw();
+})();
+
+const SHEET_URL='https://script.google.com/macros/s/AKfycbw2qQwY0fS2jOtvd56QoLwPcEtvYoH54gZ1j-tYeJpK9Xx5jRsowqehVcSpiAZ51UUVaQ/exec';
+
+function validate(){
+  const fields=['name','business','category','description','location','county','whatsapp','website','referredby'];
+  let valid=true;
+  fields.forEach(f=>{
+    const el=document.getElementById(f);
+    const err=document.getElementById(f+'-err');
+    if(!el.value.trim()){el.classList.add('invalid');if(err)err.style.display='block';valid=false;}
+    else{el.classList.remove('invalid');if(err)err.style.display='none';}
+  });
+  return valid;
+}
+
+function submitForm(e){
+  e.preventDefault();
+  if(!validate())return;
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.innerHTML='Submitting...';
+  const data={
+    Name:document.getElementById('name').value.trim(),
+    Photo:document.getElementById('photo').value.trim(),
+    Business:document.getElementById('business').value.trim(),
+    Category:document.getElementById('category').value,
+    Description:document.getElementById('description').value.trim(),
+    Location:document.getElementById('location').value.trim(),
+    County:document.getElementById('county').value.trim(),
+    Country:document.getElementById('country').value.trim(),
+    Website:document.getElementById('website').value.trim(),
+    Instagram:document.getElementById('instagram').value.trim(),
+    Facebook:document.getElementById('facebook').value.trim(),
+    Phone:document.getElementById('whatsapp').value.trim(),
+    BusinessPhone:document.getElementById('tiktok').value.trim(),
+    ReferredBy:document.getElementById('referredby').value.trim(),
+    Referred:''
+  };
+  document.getElementById('formCard').style.display='none';
+  document.getElementById('successBox').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  try{fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}
+  catch(err){console.log(err);}
+}
+
+document.querySelectorAll('input,textarea,select').forEach(el=>{
+  el.addEventListener('input',()=>{
+    el.classList.remove('invalid');
+    const err=document.getElementById(el.id+'-err');
+    if(err)err.style.display='none';
+  });
+});
+</script>
+</body>
+</html>
